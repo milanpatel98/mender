@@ -1,0 +1,7 @@
+{
+  "id": "lru-cache",
+  "title": "Cache evicts the item we just used",
+  "category": "data-structure",
+  "difficulty": "medium",
+  "issue": "Our LRUCache throws away the wrong entry. After reading key \"a\", adding a new\nkey should evict the least recently used one, but \"a\" disappears instead, and\nsometimes the brand-new key is evicted immediately. Both reads and writes\ncount as \"use\"."
+}

@@ -1,0 +1,7 @@
+{
+  "id": "retry",
+  "title": "Retry decorator retries errors it was told not to",
+  "category": "control-flow",
+  "difficulty": "medium",
+  "issue": "`@retry(exceptions=(ConnectionError,))` still retries a ValueError three times,\nwhich adds seconds of pointless sleeping before the real error surfaces. It\nshould only retry the listed exception types and re-raise anything else\nimmediately. Separately, decorated functions lose their __name__, which breaks\nour logs."
+}

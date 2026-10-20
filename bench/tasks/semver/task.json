@@ -1,0 +1,7 @@
+{
+  "id": "semver",
+  "title": "Update check thinks 1.9 is newer than 1.10",
+  "category": "parsing",
+  "difficulty": "easy",
+  "issue": "The app's update checker says version 1.10.0 is older than 1.9.0, so users on\n1.9 are never offered the update. Versions may have a leading \"v\" and may omit\nthe patch number (\"1.2\" means \"1.2.0\")."
+}

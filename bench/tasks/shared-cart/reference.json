@@ -1,0 +1,32 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "orders.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "orders.py",
+      "old": "    def __init__(self, items=[]):\n        self.items = items\n",
+      "new": "    def __init__(self, items=None):\n        self.items = list(items) if items is not None else []\n"
+    },
+    "think": "The default `items=[]` is evaluated once, so every Order() shared one list. Default to None and copy whatever the caller passes in."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "The default `items=[]` is evaluated once, so every Order() shared one list. Default to None and copy whatever the caller passes in."
+    }
+  }
+]

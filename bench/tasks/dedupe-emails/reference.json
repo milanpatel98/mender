@@ -1,0 +1,32 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "mailing.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "mailing.py",
+      "old": "    return list({email.lower() for email in emails})\n",
+      "new": "    seen, out = set(), []\n    for email in emails:\n        key = email.lower()\n        if key not in seen:\n            seen.add(key)\n            out.append(email)\n    return out\n"
+    },
+    "think": "A set comprehension discards order and keeps only the lowercased key. Track seen keys in a set, but append the original spelling to an ordered list."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "A set comprehension discards order and keeps only the lowercased key. Track seen keys in a set, but append the original spelling to an ordered list."
+    }
+  }
+]

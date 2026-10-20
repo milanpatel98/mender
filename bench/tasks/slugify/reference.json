@@ -1,0 +1,41 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "slug.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "slug.py",
+      "old": "    text = text.lower()\n",
+      "new": "    text = unicodedata.normalize(\"NFKD\", text).encode(\"ascii\", \"ignore\").decode(\"ascii\").lower()\n"
+    },
+    "think": "Non-ASCII letters were stripped by the [^a-z0-9] filter. Decompose with NFKD and drop the combining marks first, so \u00e9 becomes e before filtering."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "slug.py",
+      "old": "import re\n",
+      "new": "import re\nimport unicodedata\n"
+    },
+    "think": "Second part of the same fix."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "Non-ASCII letters were stripped by the [^a-z0-9] filter. Decompose with NFKD and drop the combining marks first, so \u00e9 becomes e before filtering."
+    }
+  }
+]

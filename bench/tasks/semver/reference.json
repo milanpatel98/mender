@@ -1,0 +1,32 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "versions.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "versions.py",
+      "old": "def parse(version):\n    return version.strip().lstrip(\"vV\").split(\".\")\n",
+      "new": "def parse(version):\n    parts = [int(p) for p in version.strip().lstrip(\"vV\").split(\".\")]\n    return tuple(parts + [0] * (3 - len(parts)))\n"
+    },
+    "think": "Version parts were compared as strings, so '10' < '9'. Parse them as integers and pad missing parts with zero."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "Version parts were compared as strings, so '10' < '9'. Parse them as integers and pad missing parts with zero."
+    }
+  }
+]

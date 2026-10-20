@@ -1,0 +1,32 @@
+[
+  {
+    "id": "20261020-110429-reference",
+    "created_at": "2026-10-20T11:04:49",
+    "provider": "reference",
+    "model": "reference",
+    "tasks": 13,
+    "solve_rate": 1.0,
+    "verdicts": {
+      "solved": 13,
+      "overfit": 0,
+      "tampered": 0,
+      "unsolved": 0,
+      "error": 0
+    }
+  },
+  {
+    "id": "20261020-110414-adversary",
+    "created_at": "2026-10-20T11:04:29",
+    "provider": "adversary",
+    "model": "adversary",
+    "tasks": 13,
+    "solve_rate": 0.0,
+    "verdicts": {
+      "solved": 0,
+      "overfit": 0,
+      "tampered": 0,
+      "unsolved": 13,
+      "error": 0
+    }
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "id": "slugify",
+  "title": "URLs mangle accented names",
+  "category": "text",
+  "difficulty": "easy",
+  "issue": "Page URLs for \"Caf\u00e9 D\u00e9j\u00e0 Vu\" come out as \"caf-d-j-vu\". Accented letters should\nbecome their plain equivalents (\"cafe-deja-vu\"), not disappear."
+}

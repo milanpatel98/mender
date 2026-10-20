@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mender"
+version = "0.1.0"
+description = "A code-repair agent built from first principles: sandboxed tools, a permission model, full traces, and a benchmark that catches cheating."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Milan Patel" }]
+dependencies = []  # the core is standard library only, on purpose
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+mender = "mender.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mender*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

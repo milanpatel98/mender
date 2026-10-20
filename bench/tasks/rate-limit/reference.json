@@ -1,0 +1,32 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "limiter.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "limiter.py",
+      "old": "        self.tokens = min(self.capacity, self.tokens + int(elapsed * self.rate))\n",
+      "new": "        self.tokens = min(self.capacity, self.tokens + elapsed * self.rate)\n"
+    },
+    "think": "Refill was truncated with int() while the timestamp still advanced, so fractional tokens were thrown away on every poll. Keep tokens as a float."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "Refill was truncated with int() while the timestamp still advanced, so fractional tokens were thrown away on every poll. Keep tokens as a float."
+    }
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "id": "rate-limit",
+  "title": "Slow rate limits never refill",
+  "category": "concurrency",
+  "difficulty": "hard",
+  "issue": "A TokenBucket with rate=0.5 (one request every two seconds) rejects every\nrequest after the first burst, forever. Faster limits seem fine. Tokens should\naccumulate continuously at `rate` per second, capped at `capacity`."
+}

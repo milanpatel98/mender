@@ -1,0 +1,7 @@
+{
+  "id": "shared-cart",
+  "title": "New orders start with someone else's items",
+  "category": "state",
+  "difficulty": "easy",
+  "issue": "Customers report that a brand-new order already contains items from a\nprevious customer's order. It only happens when Order() is created without\nan initial list. Orders must never share items, and passing a list in should\nnot let the caller mutate the order behind its back."
+}

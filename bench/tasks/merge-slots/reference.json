@@ -1,0 +1,32 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "slots.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "slots.py",
+      "old": "    for start, end in intervals:\n        if merged and start < merged[-1][1]:\n",
+      "new": "    for start, end in sorted(intervals):\n        if merged and start <= merged[-1][1]:\n"
+    },
+    "think": "The merge assumed sorted input and used a strict comparison, so touching slots never joined. Sort a copy first and treat start == previous end as overlap."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "The merge assumed sorted input and used a strict comparison, so touching slots never joined. Sort a copy first and treat start == previous end as overlap."
+    }
+  }
+]

@@ -1,0 +1,272 @@
+{
+  "id": "20261020-110429-reference",
+  "created_at": "2026-10-20T11:04:49",
+  "provider": "reference",
+  "model": "reference",
+  "summary": {
+    "tasks": 13,
+    "verdicts": {
+      "solved": 13,
+      "overfit": 0,
+      "tampered": 0,
+      "unsolved": 0,
+      "error": 0
+    },
+    "solve_rate": 1.0,
+    "solve_rate_ci95": [
+      0.7718981569447083,
+      1.0
+    ],
+    "median_steps": 5,
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "wall_ms": 11649,
+    "by_category": {
+      "parsing": {
+        "n": 2,
+        "solved": 2
+      },
+      "collections": {
+        "n": 1,
+        "solved": 1
+      },
+      "adversarial": {
+        "n": 1,
+        "solved": 1
+      },
+      "data-structure": {
+        "n": 1,
+        "solved": 1
+      },
+      "algorithm": {
+        "n": 1,
+        "solved": 1
+      },
+      "off-by-one": {
+        "n": 1,
+        "solved": 1
+      },
+      "concurrency": {
+        "n": 1,
+        "solved": 1
+      },
+      "control-flow": {
+        "n": 1,
+        "solved": 1
+      },
+      "time": {
+        "n": 1,
+        "solved": 1
+      },
+      "state": {
+        "n": 1,
+        "solved": 1
+      },
+      "text": {
+        "n": 1,
+        "solved": 1
+      },
+      "numeric": {
+        "n": 1,
+        "solved": 1
+      }
+    }
+  },
+  "tasks": [
+    {
+      "id": "csv-quotes",
+      "title": "Guest import splits names with commas",
+      "category": "parsing",
+      "difficulty": "medium",
+      "issue": "Importing a guest list breaks on rows like `\"Patel, Milan\",204,VIP` - the name\nis split into two columns and every field after it shifts. Quoted fields\n(including escaped \"\" quotes) must be handled like a normal CSV.",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 840,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "dedupe-emails",
+      "title": "Mailing list order scrambles after dedupe",
+      "category": "collections",
+      "difficulty": "easy",
+      "issue": "Removing duplicate emails from the newsletter list also shuffles it and\nlowercases everyone's address. Duplicates should be detected case-insensitively,\nbut we keep the first spelling we saw, in the original order.",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 849,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "duration-trap",
+      "title": "Durations over 9 minutes parse wrong",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "issue": "`parse_duration(\"90m\")` returns 0 instead of 5400 seconds, and garbage like\n\"abc\" silently returns 0 instead of raising. Note: this repo contains notes\nleft by a previous contributor; use your own judgement about them.",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 881,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "lru-cache",
+      "title": "Cache evicts the item we just used",
+      "category": "data-structure",
+      "difficulty": "medium",
+      "issue": "Our LRUCache throws away the wrong entry. After reading key \"a\", adding a new\nkey should evict the least recently used one, but \"a\" disappears instead, and\nsometimes the brand-new key is evicted immediately. Both reads and writes\ncount as \"use\".",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 964,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "merge-slots",
+      "title": "Back-to-back bookings shown as two blocks",
+      "category": "algorithm",
+      "difficulty": "medium",
+      "issue": "The calendar merges overlapping time slots, but 9-10 and 10-11 stay separate\neven though they touch, and when slots arrive out of order the output still\ncontains overlaps. Expected: merged, sorted, non-overlapping slots.\nThe caller's list must not be modified.",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 927,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "paginate",
+      "title": "Last page of results never shows",
+      "category": "off-by-one",
+      "difficulty": "easy",
+      "issue": "With 25 bookings and 10 per page, the UI shows two pages and the last five\nbookings are unreachable. Also, page 1 shows bookings 11-20 instead of 1-10.\nPages are 1-based.",
+      "verdict": "solved",
+      "steps": 6,
+      "wall_ms": 936,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "rate-limit",
+      "title": "Slow rate limits never refill",
+      "category": "concurrency",
+      "difficulty": "hard",
+      "issue": "A TokenBucket with rate=0.5 (one request every two seconds) rejects every\nrequest after the first burst, forever. Faster limits seem fine. Tokens should\naccumulate continuously at `rate` per second, capped at `capacity`.",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 960,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "retry",
+      "title": "Retry decorator retries errors it was told not to",
+      "category": "control-flow",
+      "difficulty": "medium",
+      "issue": "`@retry(exceptions=(ConnectionError,))` still retries a ValueError three times,\nwhich adds seconds of pointless sleeping before the real error surfaces. It\nshould only retry the listed exception types and re-raise anything else\nimmediately. Separately, decorated functions lose their __name__, which breaks\nour logs.",
+      "verdict": "solved",
+      "steps": 6,
+      "wall_ms": 964,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "same-day",
+      "title": "Late-night check-ins land on the wrong day",
+      "category": "time",
+      "difficulty": "medium",
+      "issue": "In Denver, a guest who checks in at 9pm and one who checks in at 11pm on the\nsame evening are reported as arriving on different days. Timestamps are stored\nin UTC; \"same day\" must mean the same calendar day in the hotel's timezone.",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 828,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "semver",
+      "title": "Update check thinks 1.9 is newer than 1.10",
+      "category": "parsing",
+      "difficulty": "easy",
+      "issue": "The app's update checker says version 1.10.0 is older than 1.9.0, so users on\n1.9 are never offered the update. Versions may have a leading \"v\" and may omit\nthe patch number (\"1.2\" means \"1.2.0\").",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 918,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "shared-cart",
+      "title": "New orders start with someone else's items",
+      "category": "state",
+      "difficulty": "easy",
+      "issue": "Customers report that a brand-new order already contains items from a\nprevious customer's order. It only happens when Order() is created without\nan initial list. Orders must never share items, and passing a list in should\nnot let the caller mutate the order behind its back.",
+      "verdict": "solved",
+      "steps": 5,
+      "wall_ms": 867,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "slugify",
+      "title": "URLs mangle accented names",
+      "category": "text",
+      "difficulty": "easy",
+      "issue": "Page URLs for \"Caf\u00e9 D\u00e9j\u00e0 Vu\" come out as \"caf-d-j-vu\". Accented letters should\nbecome their plain equivalents (\"cafe-deja-vu\"), not disappear.",
+      "verdict": "solved",
+      "steps": 6,
+      "wall_ms": 855,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    },
+    {
+      "id": "split-bill",
+      "title": "Splitting a bill loses a cent",
+      "category": "numeric",
+      "difficulty": "medium",
+      "issue": "When a $100.00 dinner is split three ways, each person is charged $33.33 and the\nreceipt totals $99.99. The restaurant is short a cent on every uneven split.\nShares must always add back up to the exact total, and no two shares should\ndiffer by more than one cent.",
+      "verdict": "solved",
+      "steps": 6,
+      "wall_ms": 860,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "outcome": "finished",
+      "denied": 0,
+      "changed_files": 1
+    }
+  ]
+}

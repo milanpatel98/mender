@@ -1,0 +1,7 @@
+{
+  "id": "paginate",
+  "title": "Last page of results never shows",
+  "category": "off-by-one",
+  "difficulty": "easy",
+  "issue": "With 25 bookings and 10 per page, the UI shows two pages and the last five\nbookings are unreachable. Also, page 1 shows bookings 11-20 instead of 1-10.\nPages are 1-based."
+}

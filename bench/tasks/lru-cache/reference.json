@@ -1,0 +1,32 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "cache.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "cache.py",
+      "old": "    def get(self, key, default=None):\n        return self._data.get(key, default)\n\n    def put(self, key, value):\n        self._data[key] = value\n        if len(self._data) > self.capacity:\n            self._data.popitem(last=True)\n",
+      "new": "    def get(self, key, default=None):\n        if key not in self._data:\n            return default\n        self._data.move_to_end(key)\n        return self._data[key]\n\n    def put(self, key, value):\n        self._data[key] = value\n        self._data.move_to_end(key)\n        if len(self._data) > self.capacity:\n            self._data.popitem(last=False)\n"
+    },
+    "think": "Reads never refreshed recency, and eviction popped the newest entry (last=True). Move keys to the end on get and put, and evict from the front."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "Reads never refreshed recency, and eviction popped the newest entry (last=True). Move keys to the end on get and put, and evict from the front."
+    }
+  }
+]

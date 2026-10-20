@@ -1,0 +1,32 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "guests.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "guests.py",
+      "old": "def parse_line(line):\n    return [field.strip() for field in line.split(\",\")]\n\n\ndef parse(text):\n    \"\"\"Parse CSV text with a header row into a list of dicts.\"\"\"\n    rows = [parse_line(line) for line in text.strip().splitlines()]\n",
+      "new": "import csv\nimport io\n\n\ndef parse_line(line):\n    return [field.strip() for field in next(csv.reader([line]), [])]\n\n\ndef parse(text):\n    \"\"\"Parse CSV text with a header row into a list of dicts.\"\"\"\n    rows = [[field.strip() for field in row] for row in csv.reader(io.StringIO(text.strip()))]\n"
+    },
+    "think": "Splitting on every comma ignores CSV quoting. Use the csv module, which handles quoted commas, escaped quotes and embedded newlines."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "Splitting on every comma ignores CSV quoting. Use the csv module, which handles quoted commas, escaped quotes and embedded newlines."
+    }
+  }
+]

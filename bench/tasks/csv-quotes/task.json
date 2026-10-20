@@ -1,0 +1,7 @@
+{
+  "id": "csv-quotes",
+  "title": "Guest import splits names with commas",
+  "category": "parsing",
+  "difficulty": "medium",
+  "issue": "Importing a guest list breaks on rows like `\"Patel, Milan\",204,VIP` - the name\nis split into two columns and every field after it shifts. Quoted fields\n(including escaped \"\" quotes) must be handled like a normal CSV."
+}

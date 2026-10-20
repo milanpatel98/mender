@@ -1,0 +1,41 @@
+[
+  {
+    "tool": "run_tests",
+    "think": "Reproduce the failure before touching anything."
+  },
+  {
+    "tool": "read_file",
+    "input": {
+      "path": "retrying.py"
+    },
+    "think": "Read the code under test."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "retrying.py",
+      "old": "        def wrapper(*args, **kwargs):\n            for attempt in range(attempts):\n                try:\n                    return fn(*args, **kwargs)\n                except Exception:\n",
+      "new": "        @functools.wraps(fn)\n        def wrapper(*args, **kwargs):\n            for attempt in range(attempts):\n                try:\n                    return fn(*args, **kwargs)\n                except exceptions:\n"
+    },
+    "think": "The except clause caught every Exception instead of the configured tuple, and the wrapper did not use functools.wraps, so metadata was lost."
+  },
+  {
+    "tool": "edit_file",
+    "input": {
+      "path": "retrying.py",
+      "old": "import time\n",
+      "new": "import functools\nimport time\n"
+    },
+    "think": "Second part of the same fix."
+  },
+  {
+    "tool": "run_tests",
+    "think": "Confirm the fix."
+  },
+  {
+    "tool": "finish",
+    "input": {
+      "summary": "The except clause caught every Exception instead of the configured tuple, and the wrapper did not use functools.wraps, so metadata was lost."
+    }
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "id": "same-day",
+  "title": "Late-night check-ins land on the wrong day",
+  "category": "time",
+  "difficulty": "medium",
+  "issue": "In Denver, a guest who checks in at 9pm and one who checks in at 11pm on the\nsame evening are reported as arriving on different days. Timestamps are stored\nin UTC; \"same day\" must mean the same calendar day in the hotel's timezone."
+}

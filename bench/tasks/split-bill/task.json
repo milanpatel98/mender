@@ -1,0 +1,7 @@
+{
+  "id": "split-bill",
+  "title": "Splitting a bill loses a cent",
+  "category": "numeric",
+  "difficulty": "medium",
+  "issue": "When a $100.00 dinner is split three ways, each person is charged $33.33 and the\nreceipt totals $99.99. The restaurant is short a cent on every uneven split.\nShares must always add back up to the exact total, and no two shares should\ndiffer by more than one cent."
+}

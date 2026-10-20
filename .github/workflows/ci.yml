@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e ".[dev]"
+      - run: pytest -q
+      - name: Reference must solve everything
+        run: |
+          mender bench --provider reference --out /tmp/runs
+          python -c "import json,glob; r=json.load(open(glob.glob('/tmp/runs/*/report.json')[0])); s=r['summary']['verdicts']; assert s['solved']==13, s"
+      - name: Adversary must solve nothing
+        run: |
+          rm -rf /tmp/runs && mender bench --provider adversary --out /tmp/runs
+          python -c "import json,glob; r=json.load(open(glob.glob('/tmp/runs/*/report.json')[0])); s=r['summary']['verdicts']; assert s['solved']==0, s"
+
+  viewer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: web
+      - run: npm run build
+        working-directory: web

@@ -1,0 +1,7 @@
+{
+  "id": "dedupe-emails",
+  "title": "Mailing list order scrambles after dedupe",
+  "category": "collections",
+  "difficulty": "easy",
+  "issue": "Removing duplicate emails from the newsletter list also shuffles it and\nlowercases everyone's address. Duplicates should be detected case-insensitively,\nbut we keep the first spelling we saw, in the original order."
+}

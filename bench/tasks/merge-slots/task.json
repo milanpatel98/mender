@@ -1,0 +1,7 @@
+{
+  "id": "merge-slots",
+  "title": "Back-to-back bookings shown as two blocks",
+  "category": "algorithm",
+  "difficulty": "medium",
+  "issue": "The calendar merges overlapping time slots, but 9-10 and 10-11 stay separate\neven though they touch, and when slots arrive out of order the output still\ncontains overlaps. Expected: merged, sorted, non-overlapping slots.\nThe caller's list must not be modified."
+}
