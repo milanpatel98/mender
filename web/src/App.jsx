@@ -56,21 +56,19 @@ export default function App() {
 }
 
 function Mark() {
-  // A tear, closed with five stitches: what Mender does to broken code.
-  const tear = "M8 92 L46 70 L60 84 L104 50 L118 66 L162 36 L178 52 L222 24 L236 40 L292 14";
-  const stitches = [
-    [34, 58, 58, 92],
-    [82, 42, 104, 78],
-    [140, 26, 160, 62],
-    [198, 14, 218, 48],
-    [256, 4, 274, 38],
-  ];
+  // A needle and one thread that ends in a checkmark: sewn up, tests passing.
   return (
-    <svg className="mark" viewBox="0 0 300 104" aria-hidden="true">
-      <path className="mark-tear" d={tear} />
-      {stitches.map(([x1, y1, x2, y2], i) => (
-        <line key={i} className="mark-stitch" x1={x1} y1={y1} x2={x2} y2={y2} style={{ animationDelay: `${300 + i * 110}ms` }} />
-      ))}
+    <svg className="mark" viewBox="0 0 320 130" aria-hidden="true">
+      <path
+        className="mark-thread"
+        pathLength="1"
+        d="M6 78 C 34 74, 52 46, 82 58 C 108 69, 100 100, 80 94 C 62 88, 78 62, 112 74 L 150 108 L 232 50"
+      />
+      <g className="mark-needle">
+        <line x1="238" y1="45.5" x2="290" y2="7.5" className="mark-shaft" />
+        <line x1="290" y1="7.5" x2="302" y2="-1" className="mark-tip" />
+        <ellipse cx="247" cy="39" rx="5" ry="1.6" transform="rotate(-36 247 39)" className="mark-eye" />
+      </g>
     </svg>
   );
 }
