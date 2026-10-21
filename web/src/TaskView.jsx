@@ -54,7 +54,7 @@ export default function TaskView({ report, taskId }) {
 
         <section className="issue" aria-labelledby="issue-title">
           <h2 id="issue-title">The bug report</h2>
-          <blockquote>{task.issue}</blockquote>
+          <blockquote>{task.issue.replace(/\n(?!\n)/g, " ")}</blockquote>
         </section>
 
         {error && <p className="notice">{error}</p>}
