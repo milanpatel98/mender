@@ -58,16 +58,12 @@ export default function App() {
 function Mark() {
   // A needle and one thread that ends in a checkmark: sewn up, tests passing.
   return (
-    <svg className="mark" viewBox="0 0 320 130" aria-hidden="true">
-      <path
-        className="mark-thread"
-        pathLength="1"
-        d="M6 78 C 34 74, 52 46, 82 58 C 108 69, 100 100, 80 94 C 62 88, 78 62, 112 74 L 150 108 L 232 50"
-      />
+    <svg className="mark" viewBox="0 -24 320 140" aria-hidden="true">
+      <path className="mark-thread" pathLength="100" d="M8 66 C 30 58, 50 52, 78 62 L 122 104 L 226 26" />
       <g className="mark-needle">
-        <line x1="238" y1="45.5" x2="290" y2="7.5" className="mark-shaft" />
-        <line x1="290" y1="7.5" x2="302" y2="-1" className="mark-tip" />
-        <ellipse cx="247" cy="39" rx="5" ry="1.6" transform="rotate(-36 247 39)" className="mark-eye" />
+        <line x1="231" y1="22.2" x2="284" y2="-17.8" className="mark-shaft" />
+        <line x1="284" y1="-17.8" x2="296" y2="-26.8" className="mark-tip" />
+        <ellipse cx="240" cy="15.4" rx="5" ry="1.7" transform="rotate(-37 240 15.4)" className="mark-eye" />
       </g>
     </svg>
   );
