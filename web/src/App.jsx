@@ -91,7 +91,7 @@ function RunView({ report, runs }) {
         <h1 id="title" className="word">
           Mender
         </h1>
-        <Mark />
+        {/* Hero mark: Milan is designing it. Drop the SVG into src/mark.svg and render it here. */}
         <div className="hero-foot">
           <span className="numeral" aria-hidden="true">
             {v.solved}
