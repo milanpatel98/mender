@@ -151,7 +151,7 @@ p {
 .mark {
   position: relative;
   align-self: flex-end;
-  width: clamp(160px, min(32vw, 42vh), 400px);
+  width: clamp(200px, min(40vw, 52vh), 520px);
   margin: clamp(8px, 2vw, 24px) max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))) 0 0;
   overflow: visible;
 }
@@ -166,11 +166,11 @@ p {
 }
 
 .mark-tear {
-  stroke-width: 3;
+  stroke-width: 5;
 }
 
 .mark-stitch {
-  stroke-width: 4.5;
+  stroke-width: 7;
   stroke-dasharray: 60;
   stroke-dashoffset: 60;
   animation: stitch 380ms cubic-bezier(0.3, 0.6, 0.2, 1) forwards;
