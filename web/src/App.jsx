@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Swatch from "./Swatch.jsx";
 import TaskView from "./TaskView.jsx";
+import { Bar, Footer } from "./Chrome.jsx";
 import { VERDICT_SHORT, describeRun, loadIndex, loadReport, parseHash, pct, toHash } from "./data.js";
 
 function useHashRoute() {
@@ -22,7 +23,7 @@ export default function App() {
   useEffect(() => {
     loadIndex()
       .then(setRuns)
-      .catch(() => setError("No runs found. Run `mender bench --provider reference` in the project folder, then refresh."));
+      .catch(() => setError("No runs found. Run “mender bench --provider reference” in the project folder, then refresh."));
   }, []);
 
   const runId = route.runId || runs?.[0]?.id || "";
@@ -32,122 +33,138 @@ export default function App() {
     setReport(null);
     loadReport(runId)
       .then(setReport)
-      .catch(() => setError(`Could not load run ${runId}. It may have been deleted with \`mender clean\`.`));
+      .catch(() => setError(`Could not load run ${runId}. It may have been deleted with “mender clean”.`));
   }, [runId]);
 
+  const dark = Boolean(route.taskId);
   useEffect(() => {
-    if (!route.taskId) window.scrollTo({ top: 0 });
-  }, [route.taskId, runId]);
+    document.documentElement.dataset.view = dark ? "task" : "run";
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", dark ? "#111111" : "#F4EE7B");
+  }, [dark]);
 
+  if (error) {
+    return (
+      <div className="shell">
+        <Bar />
+        <p className="notice">{error}</p>
+      </div>
+    );
+  }
+  if (!report) return <div className="shell loading" aria-busy="true" />;
+  if (route.taskId) return <TaskView report={report} taskId={route.taskId} />;
+  return <RunView report={report} runs={runs || []} />;
+}
+
+function Loops() {
+  // Three loose stitches. The project's mark, drawn like thread.
   return (
-    <div className="page">
-      <header className="masthead">
-        <a className="wordmark" href={toHash(runId)}>
-          Mender
-        </a>
-        <p className="tagline">A code-repair agent, graded so it cannot cheat.</p>
-        <a className="source" href="https://github.com/milanpatel98/mender">
-          Source on GitHub
-        </a>
-      </header>
-
-      {error && <p className="notice">{error}</p>}
-
-      {runs && runs.length > 0 && <RunPicker runs={runs} current={runId} />}
-
-      {report && !route.taskId && <RunView report={report} />}
-      {report && route.taskId && <TaskView report={report} taskId={route.taskId} />}
-
-      <footer className="colophon">
-        <p>
-          Built by Milan Patel. Tasks, harness and grader are original work; the agent loop uses no framework.
-          Run your own model with <code>mender bench --model &lt;id&gt;</code>.
-        </p>
-      </footer>
-    </div>
+    <svg className="loops" viewBox="0 0 300 120" aria-hidden="true">
+      {[0, 1, 2].map((i) => (
+        <ellipse key={i} cx={60 + i * 90} cy={60} rx={38} ry={56} transform={`rotate(28 ${60 + i * 90} 60)`} />
+      ))}
+    </svg>
   );
 }
 
-function RunPicker({ runs, current }) {
-  return (
-    <nav className="runs" aria-label="Benchmark runs">
-      <h2 className="runs-heading">Runs</h2>
-      <ul>
-        {runs.map((run) => (
-          <li key={run.id}>
-            <a href={toHash(run.id)} aria-current={run.id === current ? "page" : undefined}>
-              <span className="run-name">{run.model}</span>
-              <span className="run-score">
-                {run.verdicts.solved}/{run.tasks}
-              </span>
-              <span className="run-when">{new Date(run.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-}
-
-function RunView({ report }) {
+function RunView({ report, runs }) {
   const s = report.summary;
-  const [lo, hi] = s.solve_rate_ci95;
   const v = s.verdicts;
+  const [lo, hi] = s.solve_rate_ci95;
   const [animate] = useState(() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const order = { solved: 0, overfit: 1, tampered: 2, unsolved: 3, error: 4 };
-  const tasks = useMemo(() => [...report.tasks].sort((a, b) => order[a.verdict] - order[b.verdict] || a.id.localeCompare(b.id)), [report]);
+  const tasks = useMemo(
+    () => [...report.tasks].sort((a, b) => order[a.verdict] - order[b.verdict] || a.id.localeCompare(b.id)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [report],
+  );
   const denied = report.tasks.reduce((n, t) => n + (t.denied || 0), 0);
-
-  const caught = [
-    v.overfit && `${v.overfit} overfit to the visible tests`,
-    v.tampered && `${v.tampered} changed a protected file`,
-    denied && `${denied} attempts to edit tests or config were blocked`,
-  ].filter(Boolean);
+  const adversary = report.provider === "adversary";
 
   return (
-    <main>
-      <section className="lede" aria-labelledby="run-title">
-        <h1 id="run-title">{describeRun(report)}</h1>
-        <p className="lede-sentence">
-          Mended <strong>{v.solved} of {s.tasks}</strong> tears ({pct(s.solve_rate)}; with only {s.tasks} tasks the honest range is {pct(lo)} to {pct(hi)}), in a median of {s.median_steps} steps.
-          {caught.length > 0 && <> The grader also caught: {caught.join("; ")}.</>}
-        </p>
-        {(s.tokens_in > 0 || s.tokens_out > 0) && (
-          <p className="lede-meta">
-            {s.tokens_in.toLocaleString()} input tokens and {s.tokens_out.toLocaleString()} output tokens across the run.
+    <div className="shell">
+      <section className="hero" aria-labelledby="title">
+        <div className="hero-grid" aria-hidden="true" />
+        <Bar />
+        <h1 id="title" className="word">
+          Mender
+        </h1>
+        <Loops />
+        <div className="hero-foot">
+          <span className="numeral" aria-hidden="true">
+            {v.solved}
+          </span>
+          <p className="hero-caption">
+            {adversary ? (
+              <>
+                Tasks a cheating agent got past the grader.
+                <br />
+                {denied} attempts to rewrite the tests, all blocked.
+              </>
+            ) : (
+              <>
+                Bugs fixed out of {s.tasks}, checked against
+                <br />
+                hidden tests the agent never saw.
+              </>
+            )}
           </p>
-        )}
+        </div>
       </section>
 
-      <Legend />
-
-      <ul className="swatches">
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <a className={`swatch-card verdict-${task.verdict}`} href={toHash(report.id, task.id)}>
-              <Swatch task={task} animate={animate} />
-              <span className="swatch-title">{task.title}</span>
-              <span className="swatch-meta">
-                {VERDICT_SHORT[task.verdict]}, {task.steps} steps
-              </span>
-            </a>
-          </li>
+      <nav className="runs" aria-label="Benchmark runs">
+        {runs.map((run) => (
+          <a key={run.id} href={toHash(run.id)} aria-current={run.id === report.id ? "page" : undefined}>
+            <span className="run-name">{run.provider === "reference" ? "Reference fixes" : run.provider === "adversary" ? "Cheating agent" : run.model}</span>
+            <span className="run-score">
+              {run.verdicts.solved}/{run.tasks}
+            </span>
+          </a>
         ))}
-      </ul>
-    </main>
-  );
-}
+      </nav>
 
-function Legend() {
-  return (
-    <details className="legend">
-      <summary>How to read the swatches</summary>
-      <p>
-        Each task is a torn piece of cloth. Every step the agent took is a stitch across the tear. Gold thread
-        closes a tear the agent truly fixed. A tear closed only halfway passed the visible tests but failed the
-        hidden ones. Red thread means a protected file changed, and a red cross is a cheat attempt the
-        permission layer blocked.
-      </p>
-    </details>
+      <section className="intro">
+        <h2 className="intro-title">An agent that fixes bugs, graded so it cannot cheat.</h2>
+        <div className="intro-body">
+          <p>
+            Mender reads a bug report, runs the tests, finds the cause and makes the smallest fix. Passing the tests it can see is not enough. Every
+            task also has hidden tests, and any change to a test file fails the task outright.
+          </p>
+          <p className="intro-meta">
+            This run: {describeRun(report)}. Solve rate {pct(s.solve_rate)}, and with only {s.tasks} tasks the honest range is {pct(lo)}
+            –{pct(hi)}. Median {s.median_steps} steps per task.
+          </p>
+        </div>
+      </section>
+
+      <section className="work" aria-labelledby="work-title">
+        <div className="work-head">
+          <h2 id="work-title">Tasks</h2>
+          <details className="legend">
+            <summary>How to read these</summary>
+            <p>
+              Each task is a torn piece of cloth and every step the agent took is a stitch. Black thread closes a real fix. Half-closed means the
+              visible tests passed but the hidden ones failed. Red crosses are attempts to edit tests that the permission layer blocked.
+            </p>
+          </details>
+        </div>
+        <ul className="cards">
+          {tasks.map((task, i) => (
+            <li key={task.id}>
+              <a className={`card verdict-${task.verdict}`} href={toHash(report.id, task.id)}>
+                <span className="card-art">
+                  <Swatch task={task} animate={animate && i < 8} />
+                </span>
+                <span className="card-title">{task.title}</span>
+                <span className="card-meta">
+                  {VERDICT_SHORT[task.verdict]} · {task.steps} steps
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <Footer />
+    </div>
   );
 }

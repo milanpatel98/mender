@@ -1,24 +1,30 @@
-/* Mender: sashiko on aizome indigo. One motif (the swatch), everything else quiet. */
+/* Mender. Flat yellow field, oversized grotesk, thin grid rules; task pages go black.
+   One family (Inter Tight), mono only for code and numbers in code. */
 
 :root {
-  --indigo: #1b2747;
-  --indigo-deep: #121b33;
-  --indigo-night: #0d1426;
-  --thread: #e8e2d3;
-  --faded: #8e9cc2;
-  --faded-line: #34436b;
-  --gold: #d6b457;
-  --red: #e0616f;
-  --red-thread: #d24a5a;
-  --green: #9cc8a3;
+  --yellow: #f4ee7b;
+  --yellow-deep: #e9e266;
+  --ink: #111111;
+  --ink-2: #4a4a46;
+  --muted: #7a7a74;
+  --rule: rgba(17, 17, 17, 0.12);
+  --paper: #ffffff;
+  --card: #efefea;
+  --red: #c8524a;
+  --red-soft: #f3d3cf;
 
-  --serif: "Zen Old Mincho", "Hiragino Mincho ProN", Georgia, serif;
-  --sans: "Zen Kaku Gothic New", "Hiragino Sans", system-ui, sans-serif;
+  --night: #121212;
+  --night-2: #1c1c1c;
+  --night-3: #262626;
+  --night-rule: #2e2e2e;
+  --white: #f3f3f0;
+  --grey: #8c8c86;
+  --green: #a6d28f;
+
+  --sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
-
-  --measure: 68ch;
-  --gutter: clamp(16px, 4vw, 48px);
-  color-scheme: dark;
+  --pad: clamp(16px, 4vw, 48px);
+  --max: 1360px;
 }
 
 *,
@@ -28,30 +34,29 @@
 }
 
 html {
-  background: var(--indigo);
+  background: var(--paper);
   -webkit-text-size-adjust: 100%;
+}
+
+html[data-view="task"] {
+  background: var(--night);
 }
 
 body {
   margin: 0;
-  background: var(--indigo);
-  color: var(--thread);
-  font: 400 17px/1.6 var(--sans);
+  background: inherit;
+  color: var(--ink);
+  font: 400 17px/1.5 var(--sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
   color: inherit;
-  text-decoration-color: var(--faded);
-  text-underline-offset: 3px;
-}
-
-a:hover {
-  text-decoration-color: var(--gold);
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid currentColor;
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -62,200 +67,302 @@ code {
 }
 
 h1,
-h2 {
-  font-family: var(--serif);
-  font-weight: 700;
-  line-height: 1.25;
+h2,
+p {
   margin: 0;
 }
 
-.page {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 0 var(--gutter) 64px;
+.shell {
+  min-height: 100vh;
 }
 
-/* ---- masthead ---------------------------------------------------------- */
+.loading {
+  background: var(--yellow);
+}
 
-.masthead {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+/* ---- top bar: the "LOFI – 03 / MENU" line ----------------------------------- */
+
+.bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
   align-items: baseline;
-  gap: 8px 24px;
-  padding: 32px 0 28px;
-  border-bottom: 1px dashed var(--faded-line);
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 20px var(--pad) 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
-.wordmark {
-  font-family: var(--serif);
-  font-weight: 900;
-  font-size: 30px;
-  letter-spacing: 0.02em;
+.bar a {
   text-decoration: none;
 }
 
-.tagline {
-  margin: 0;
-  color: var(--faded);
+.bar a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
-.source {
-  font-size: 15px;
-  color: var(--faded);
+.bar-dark {
+  color: var(--white);
 }
 
-/* ---- run picker ---------------------------------------------------------- */
+/* ---- hero ---------------------------------------------------------------------- */
 
-.runs {
+.hero {
+  position: relative;
   display: flex;
-  align-items: baseline;
-  gap: 20px;
-  padding: 18px 0;
+  flex-direction: column;
+  min-height: min(100svh, 940px);
+  background: var(--yellow);
+  overflow: hidden;
 }
 
-.runs-heading {
-  font-family: var(--sans);
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--faded);
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(25% - 1px),
+    var(--rule) calc(25% - 1px),
+    var(--rule) 25%
+  );
 }
 
-.runs ul {
+.word {
+  position: relative;
+  max-width: var(--max);
+  width: 100%;
+  margin: clamp(56px, 12vh, 120px) auto 0;
+  padding: 0 var(--pad);
+  font-size: clamp(104px, 25vw, 340px);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.06em;
+  text-indent: -0.05em;
+}
+
+.loops {
+  position: relative;
+  align-self: flex-end;
+  width: clamp(150px, 30vw, 380px);
+  margin: clamp(8px, 2vw, 24px) max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))) 0 0;
+  overflow: visible;
+}
+
+.loops ellipse {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.hero-foot {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  align-items: flex-end;
+  gap: 10px clamp(20px, 4vw, 56px);
+  max-width: var(--max);
+  width: 100%;
+  margin: auto auto 0;
+  padding: 24px var(--pad) clamp(24px, 4vw, 44px);
+}
+
+.numeral {
+  font-size: clamp(120px, 24vw, 300px);
+  font-weight: 300;
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  margin-left: -0.04em;
+}
+
+.hero-caption {
+  max-width: 34ch;
+  padding-bottom: 4px;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* ---- run switcher ------------------------------------------------------------------ */
+
+.runs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  border-bottom: 1px solid var(--ink);
+  background: var(--ink);
+  gap: 1px;
 }
 
 .runs a {
-  display: inline-flex;
+  display: flex;
+  justify-content: space-between;
   align-items: baseline;
-  gap: 10px;
-  padding: 7px 14px;
-  border: 1px solid var(--faded-line);
-  border-radius: 999px;
-  font-size: 15px;
+  gap: 12px;
+  padding: 18px var(--pad);
+  background: var(--paper);
   text-decoration: none;
-  color: var(--faded);
+  font-size: 17px;
+  font-weight: 500;
 }
 
 .runs a:hover {
-  border-color: var(--faded);
-  color: var(--thread);
+  background: var(--card);
 }
 
 .runs a[aria-current="page"] {
-  border-color: var(--gold);
-  color: var(--thread);
+  background: var(--ink);
+  color: var(--yellow);
 }
 
 .run-score {
   font-family: var(--mono);
-  font-size: 13px;
-  color: var(--gold);
-}
-
-.run-when {
-  font-size: 13px;
-}
-
-/* ---- lede ------------------------------------------------------------------ */
-
-.lede {
-  padding: 40px 0 28px;
-}
-
-.lede h1 {
-  font-size: clamp(30px, 4.6vw, 52px);
-  font-weight: 900;
-  max-width: 20ch;
-  letter-spacing: -0.005em;
-}
-
-.lede-sentence {
-  max-width: var(--measure);
-  margin: 20px 0 0;
-  font-size: 19px;
-  line-height: 1.7;
-}
-
-.lede-sentence strong {
-  font-weight: 700;
-  color: var(--gold);
-}
-
-.lede-meta {
-  margin: 10px 0 0;
   font-size: 15px;
-  color: var(--faded);
+}
+
+/* ---- intro --------------------------------------------------------------------------- */
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 28px clamp(32px, 6vw, 96px);
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 104px) var(--pad);
+}
+
+.intro-title {
+  font-size: clamp(32px, 4.4vw, 60px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  max-width: 14ch;
+}
+
+.intro-body {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  max-width: 56ch;
+  padding-top: 6px;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.intro-meta {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* ---- tasks: the "selected work" grid -------------------------------------------------- */
+
+.work {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad) clamp(56px, 8vw, 96px);
+}
+
+.work-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 24px;
+  padding: 16px 0 22px;
+  border-top: 1px solid var(--ink);
+}
+
+.work-head h2 {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .legend {
-  max-width: var(--measure);
-  margin-bottom: 28px;
-  color: var(--faded);
+  max-width: 60ch;
+  color: var(--muted);
   font-size: 15px;
 }
 
 .legend summary {
   cursor: pointer;
   width: fit-content;
+  margin-left: auto;
 }
 
 .legend p {
-  margin: 10px 0 0;
+  margin-top: 8px;
 }
 
-/* ---- swatch grid ------------------------------------------------------------ */
-
-.swatches {
+.cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
-  gap: 28px 22px;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 40px 20px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.swatch-card {
+.card {
   display: grid;
   gap: 4px;
   text-decoration: none;
 }
 
-.swatch-card .swatch {
-  margin-bottom: 8px;
-  transition: transform 160ms ease;
+.card-art {
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--card);
 }
 
-.swatch-card:hover .swatch {
-  transform: translateY(-2px);
+.card.verdict-solved .card-art {
+  background: var(--yellow);
 }
 
-.swatch-title {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1.35;
+.card.verdict-tampered .card-art,
+.card.verdict-error .card-art {
+  background: var(--red-soft);
 }
 
-.swatch-meta {
-  font-size: 14px;
-  color: var(--faded);
+.card.verdict-tampered .tear-mended {
+  stroke: var(--red-soft);
 }
 
-.verdict-solved .swatch-meta {
-  color: var(--gold);
+.card-art .swatch {
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.verdict-tampered .swatch-meta,
-.verdict-error .swatch-meta {
-  color: var(--red);
+.card:hover .card-art .swatch {
+  transform: scale(1.04);
 }
 
-/* ---- the swatch itself --------------------------------------------------------- */
+.card-title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.card:hover .card-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.card-meta {
+  font-size: 15px;
+  color: var(--muted);
+}
+
+/* ---- the swatch ----------------------------------------------------------------------- */
 
 .swatch {
   display: block;
@@ -265,61 +372,57 @@ h2 {
 }
 
 .swatch .cloth {
-  fill: var(--indigo-deep);
+  fill: transparent;
 }
 
 .swatch .weave path {
-  stroke: var(--faded-line);
-  stroke-width: 0.6;
-  stroke-dasharray: 3 3;
-  opacity: 0.55;
+  stroke: var(--ink);
+  stroke-width: 0.5;
+  stroke-dasharray: 2.5 3;
+  opacity: 0.18;
 }
 
 .swatch .tear {
   fill: none;
-  stroke: var(--indigo-night);
+  stroke: var(--ink);
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .swatch .tear-mended {
   fill: none;
-  stroke: var(--indigo-deep);
-  stroke-width: 4;
+  stroke: var(--card);
+  stroke-width: 3.5;
   stroke-linecap: round;
 }
 
 .swatch .thread path {
   fill: none;
-  stroke: var(--thread);
-  stroke-width: 1.8;
+  stroke: var(--ink);
+  stroke-width: 2;
   stroke-linecap: round;
-}
-
-.swatch .thread-gold path {
-  stroke: var(--gold);
 }
 
 .swatch .thread-red path {
-  stroke: var(--red-thread);
+  stroke: var(--red);
 }
 
 .swatch .thread path.loose {
-  stroke: var(--faded-line);
-  stroke-dasharray: 0.18 0.12;
+  stroke: var(--ink);
+  opacity: 0.28;
+  stroke-dasharray: 0.16 0.12;
 }
 
 .swatch .denied path {
-  stroke: var(--red-thread);
-  stroke-width: 1.8;
+  stroke: var(--red);
+  stroke-width: 2;
   stroke-linecap: round;
 }
 
-/* One orchestrated moment: stitches draw in when a run first loads. */
 .swatch-animate .thread path:not(.loose) {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: sew 420ms ease-out forwards;
+  animation: sew 460ms cubic-bezier(0.3, 0.6, 0.2, 1) forwards;
 }
 
 @keyframes sew {
@@ -328,93 +431,168 @@ h2 {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .swatch-animate .thread path:not(.loose) {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-  .swatch-card .swatch {
-    transition: none;
-  }
+/* ---- footer ----------------------------------------------------------------------------- */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 20px var(--pad) 32px;
+  border-top: 1px solid var(--ink);
+  font-size: 14px;
+  color: var(--muted);
 }
 
-/* ---- task view ------------------------------------------------------------------ */
+.foot-dark {
+  border-top-color: var(--night-rule);
+  color: var(--grey);
+}
+
+.notice {
+  max-width: 60ch;
+  margin: 40px var(--pad);
+  padding: 14px 18px;
+  border-left: 3px solid var(--red);
+  background: var(--card);
+}
+
+/* =========================================================================================
+   Task page: black, the "#PromptBox" look
+   ========================================================================================= */
+
+.shell-dark {
+  background: var(--night);
+  color: var(--white);
+}
+
+.shell-dark .notice {
+  background: var(--night-2);
+}
 
 .task {
-  max-width: 860px;
-  padding-top: 28px;
-}
-
-.task section {
-  margin-top: 44px;
-}
-
-.task h2 {
-  font-size: 22px;
-  margin-bottom: 14px;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: clamp(40px, 7vw, 72px) var(--pad) 56px;
 }
 
 .back {
-  font-size: 15px;
-  color: var(--faded);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px 8px;
+  border: 1.5px solid var(--white);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
 }
 
-.task .task-head {
+.back:hover {
+  background: var(--white);
+  color: var(--night);
+}
+
+.task-title {
   display: grid;
-  grid-template-columns: 132px 1fr;
-  gap: 28px;
-  align-items: start;
-  margin-top: 24px;
+  margin: clamp(32px, 6vw, 56px) 0 clamp(24px, 4vw, 36px);
+  font-size: clamp(38px, 7vw, 76px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
 }
 
-.task-head h1 {
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 900;
+.task-title-lead {
+  color: var(--grey);
 }
 
-.task-kind {
-  margin: 8px 0 0;
-  color: var(--faded);
+.plate {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: clamp(24px, 6vw, 56px) clamp(16px, 4vw, 40px) 16px;
+  border-radius: 8px;
+  background: var(--red);
+}
+
+.plate-solved {
+  background: var(--yellow);
+}
+
+.plate .swatch {
+  width: min(100%, 380px);
+}
+
+.plate .swatch .tear-mended {
+  stroke: var(--yellow);
+}
+
+.plate-caption {
+  justify-self: start;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  opacity: 0.75;
+}
+
+.plate:not(.plate-solved) .swatch .thread path,
+.plate:not(.plate-solved) .swatch .tear,
+.plate:not(.plate-solved) .swatch .weave path {
+  stroke: var(--night);
+}
+
+.plate:not(.plate-solved) .swatch .denied path {
+  stroke: var(--white);
+}
+
+.plate:not(.plate-solved) .swatch .tear-mended {
+  stroke: var(--red);
 }
 
 .verdict {
-  max-width: var(--measure);
-  margin: 16px 0 0;
-  padding-left: 14px;
-  border-left: 3px solid var(--faded);
+  margin-top: 28px;
+  max-width: 62ch;
+  font-size: 19px;
+  line-height: 1.5;
 }
 
-.verdict.verdict-solved {
-  border-left-color: var(--gold);
+.task section {
+  margin-top: 56px;
 }
 
-.verdict.verdict-tampered,
-.verdict.verdict-error {
-  border-left-color: var(--red);
+.task h2 {
+  margin-bottom: 16px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--grey);
 }
 
 .issue blockquote {
-  max-width: var(--measure);
   margin: 0;
-  padding: 18px 22px;
-  background: var(--indigo-deep);
-  border-radius: 4px;
-  font-family: var(--serif);
-  font-size: 18px;
-  line-height: 1.75;
+  padding-left: 18px;
+  border-left: 2px solid var(--white);
+  font-size: clamp(19px, 2.4vw, 23px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
   white-space: pre-line;
 }
 
 .agent-summary {
-  max-width: var(--measure);
-  margin: 0;
+  max-width: 64ch;
+  font-size: 18px;
 }
 
 .muted {
-  color: var(--faded);
+  color: var(--grey);
 }
 
-/* ---- steps ------------------------------------------------------------------------- */
+/* steps */
 
 .steps {
   margin: 0;
@@ -425,35 +603,27 @@ h2 {
 
 .step {
   position: relative;
-  padding: 0 0 22px 44px;
+  padding: 0 0 26px 48px;
   counter-increment: step;
 }
 
-/* The steps are a sequence, so they are numbered, joined by a running stitch. */
 .step::before {
-  content: counter(step);
+  content: counter(step, decimal-leading-zero);
   position: absolute;
   left: 0;
-  top: 2px;
-  width: 26px;
-  height: 26px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--faded-line);
-  border-radius: 50%;
+  top: 3px;
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--faded);
-  background: var(--indigo);
+  color: var(--grey);
 }
 
 .step::after {
   content: "";
   position: absolute;
-  left: 13px;
-  top: 32px;
-  bottom: 2px;
-  border-left: 1.5px dashed var(--faded-line);
+  left: 8px;
+  top: 26px;
+  bottom: 4px;
+  border-left: 1px solid var(--night-rule);
 }
 
 .step:last-child::after {
@@ -461,22 +631,22 @@ h2 {
 }
 
 .thought {
-  max-width: var(--measure);
-  margin: 0 0 8px;
-  color: var(--faded);
+  max-width: 62ch;
+  margin-bottom: 10px;
+  color: var(--white);
+  opacity: 0.82;
 }
 
 .note {
-  margin: 6px 0 0;
+  margin-top: 6px;
   font-size: 15px;
-  color: var(--faded);
+  color: var(--grey);
 }
 
 .call {
-  margin-top: 6px;
-  border: 1px solid var(--faded-line);
-  border-radius: 4px;
-  background: var(--indigo-deep);
+  margin-top: 8px;
+  border-radius: 6px;
+  background: var(--night-2);
 }
 
 .call > summary {
@@ -484,9 +654,9 @@ h2 {
   flex-wrap: wrap;
   align-items: baseline;
   gap: 4px 14px;
-  padding: 9px 14px;
-  cursor: pointer;
+  padding: 11px 14px;
   font-size: 15px;
+  cursor: pointer;
   list-style: none;
 }
 
@@ -495,58 +665,58 @@ h2 {
 }
 
 .call[open] > summary {
-  border-bottom: 1px solid var(--faded-line);
+  border-bottom: 1px solid var(--night-rule);
 }
 
 .call-tool {
-  color: var(--thread);
+  color: var(--white);
   font-weight: 600;
 }
 
 .call-target {
-  color: var(--faded);
+  color: var(--grey);
   overflow-wrap: anywhere;
 }
 
 .call-status {
-  font-size: 14px;
-  color: var(--faded);
-}
-
-.call-denied {
-  border-color: var(--red-thread);
+  padding: 1px 9px 0;
+  border-radius: 999px;
+  background: var(--night-3);
+  font-size: 13px;
+  color: var(--grey);
 }
 
 .call-denied .call-status,
 .call-error .call-status {
-  color: var(--red);
+  background: var(--red);
+  color: var(--white);
 }
 
 .call-final .call-status {
-  color: var(--gold);
+  background: var(--yellow);
+  color: var(--ink);
 }
 
 .call-time {
   margin-left: auto;
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--faded);
+  color: var(--grey);
 }
 
 .code {
   margin: 0;
   padding: 14px 16px;
   overflow-x: auto;
-  font: 400 13px/1.6 var(--mono);
+  font: 400 13px/1.65 var(--mono);
   white-space: pre;
   tab-size: 4;
-  color: var(--thread);
+  color: var(--white);
 }
 
 .task > section > .code {
-  border: 1px solid var(--faded-line);
-  border-radius: 4px;
-  background: var(--indigo-deep);
+  border-radius: 6px;
+  background: var(--night-2);
 }
 
 .diff .add {
@@ -554,105 +724,132 @@ h2 {
 }
 
 .diff .del {
-  color: var(--red);
+  color: #f08a80;
 }
 
 .diff .hunk {
-  color: var(--faded);
+  color: var(--grey);
 }
 
 .diff .file {
-  color: var(--thread);
   font-weight: 600;
 }
 
-/* ---- grading -------------------------------------------------------------------------- */
-
 .checks {
-  margin: 0 0 14px;
+  display: grid;
+  gap: 8px;
+  margin: 0 0 16px;
   padding: 0;
   list-style: none;
-  display: grid;
-  gap: 6px;
+  font-size: 17px;
 }
 
 .check-mark {
-  display: inline-block;
+  display: inline-grid;
+  place-items: center;
   width: 22px;
+  height: 22px;
+  margin-right: 10px;
+  border-radius: 50%;
+  font-size: 12px;
   font-weight: 700;
+  vertical-align: 1px;
 }
 
 .checks .pass .check-mark {
-  color: var(--gold);
+  background: var(--yellow);
+  color: var(--ink);
 }
 
 .checks .fail .check-mark {
-  color: var(--red);
+  background: var(--red);
+  color: var(--white);
 }
 
 .pager {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-top: 56px;
+  margin-top: 72px;
   padding-top: 20px;
-  border-top: 1px dashed var(--faded-line);
-  font-size: 15px;
+  border-top: 1px solid var(--night-rule);
 }
 
 .pager a {
-  color: var(--faded);
+  display: grid;
+  gap: 4px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-decoration: none;
 }
 
-/* ---- misc ------------------------------------------------------------------------------- */
-
-.notice {
-  max-width: var(--measure);
-  margin: 28px 0;
-  padding: 14px 18px;
-  border-left: 3px solid var(--red);
-  background: var(--indigo-deep);
+.pager a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
-.colophon {
-  margin-top: 72px;
-  padding-top: 20px;
-  border-top: 1px dashed var(--faded-line);
-  font-size: 14px;
-  color: var(--faded);
+.pager-next {
+  text-align: right;
 }
 
-.colophon p {
-  max-width: var(--measure);
-  margin: 0;
+.pager-dir {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--grey);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-@media (max-width: 640px) {
+/* ---- phone ---------------------------------------------------------------------------------- */
+
+@media (max-width: 720px) {
   body {
     font-size: 16px;
   }
-  .masthead {
-    grid-template-columns: 1fr auto;
+  .hero {
+    min-height: min(100svh, 760px);
   }
-  .tagline {
-    grid-column: 1 / -1;
-    grid-row: 2;
+  .hero-grid {
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(33.333% - 1px),
+      var(--rule) calc(33.333% - 1px),
+      var(--rule) 33.333%
+    );
   }
-  .runs {
+  .hero-foot {
     flex-direction: column;
-    gap: 10px;
+    align-items: flex-start;
   }
-  .swatches {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px 14px;
-  }
-  .task .task-head {
+  .intro {
     grid-template-columns: 1fr;
   }
-  .task-head .swatch {
-    width: 112px;
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 12px;
   }
-  .pager {
-    flex-direction: column;
+  .card-title {
+    font-size: 16px;
+  }
+  .card-meta {
+    font-size: 14px;
+  }
+  .legend summary {
+    margin-left: 0;
+  }
+  .call-time {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swatch-animate .thread path:not(.loose) {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .card-art .swatch {
+    transition: none;
   }
 }

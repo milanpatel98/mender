@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Swatch from "./Swatch.jsx";
-import { VERDICT_TEXT, loadTrace, seconds, toHash } from "./data.js";
+import { Bar, Footer } from "./Chrome.jsx";
+import { VERDICT_SHORT, VERDICT_TEXT, loadTrace, seconds, toHash } from "./data.js";
 
 export default function TaskView({ report, taskId }) {
   const task = report.tasks.find((t) => t.id === taskId);
@@ -16,11 +17,12 @@ export default function TaskView({ report, taskId }) {
 
   if (!task) {
     return (
-      <main>
+      <div className="shell shell-dark">
+        <Bar dark />
         <p className="notice">
           There is no task called “{taskId}” in this run. <a href={toHash(report.id)}>See all tasks</a>.
         </p>
-      </main>
+      </div>
     );
   }
 
@@ -29,47 +31,68 @@ export default function TaskView({ report, taskId }) {
   const next = report.tasks[index + 1];
 
   return (
-    <main className="task">
-      <a className="back" href={toHash(report.id)}>
-        All tasks in this run
-      </a>
+    <div className="shell shell-dark">
+      <Bar dark />
+      <main className="task">
+        <a className="back" href={toHash(report.id)}>
+          <span aria-hidden="true">←</span> Back
+        </a>
 
-      <section className="task-head">
-        <Swatch task={task} animate={false} />
-        <div>
-          <h1>{task.title}</h1>
-          <p className="task-kind">
-            {task.category} bug, {task.difficulty}. {task.steps} steps in {seconds(task.wall_ms)}.
+        <h1 className="task-title">
+          <span className="task-title-lead">{VERDICT_SHORT[task.verdict]}.</span>
+          <span>{task.title}.</span>
+        </h1>
+
+        <div className={`plate plate-${task.verdict}`}>
+          <Swatch task={task} animate={false} />
+          <p className="plate-caption">
+            {task.category} · {task.difficulty} · {task.steps} steps · {seconds(task.wall_ms)}
           </p>
-          <p className={`verdict verdict-${task.verdict}`}>{VERDICT_TEXT[task.verdict]}</p>
         </div>
-      </section>
 
-      <section className="issue" aria-labelledby="issue-title">
-        <h2 id="issue-title">The bug report the agent received</h2>
-        <blockquote>{task.issue}</blockquote>
-      </section>
+        <p className={`verdict verdict-${task.verdict}`}>{VERDICT_TEXT[task.verdict]}</p>
 
-      {error && <p className="notice">{error}</p>}
-      {trace && (
-        <>
-          {trace.summary && (
-            <section aria-labelledby="summary-title">
-              <h2 id="summary-title">The agent’s explanation</h2>
-              <p className="agent-summary">{trace.summary}</p>
-            </section>
+        <section className="issue" aria-labelledby="issue-title">
+          <h2 id="issue-title">The bug report</h2>
+          <blockquote>{task.issue}</blockquote>
+        </section>
+
+        {error && <p className="notice">{error}</p>}
+        {trace && (
+          <>
+            {trace.summary && (
+              <section aria-labelledby="summary-title">
+                <h2 id="summary-title">The agent’s explanation</h2>
+                <p className="agent-summary">{trace.summary}</p>
+              </section>
+            )}
+            <Steps events={trace.events} />
+            <Diff diff={trace.diff} />
+            <Grading grading={trace.grading} />
+          </>
+        )}
+
+        <nav className="pager" aria-label="Other tasks">
+          {prev ? (
+            <a href={toHash(report.id, prev.id)}>
+              <span className="pager-dir">Previous</span>
+              {prev.title}
+            </a>
+          ) : (
+            <span />
           )}
-          <Steps events={trace.events} />
-          <Diff diff={trace.diff} />
-          <Grading grading={trace.grading} />
-        </>
-      )}
-
-      <nav className="pager" aria-label="Other tasks">
-        {prev ? <a href={toHash(report.id, prev.id)}>Previous: {prev.title}</a> : <span />}
-        {next ? <a href={toHash(report.id, next.id)}>Next: {next.title}</a> : <span />}
-      </nav>
-    </main>
+          {next ? (
+            <a href={toHash(report.id, next.id)} className="pager-next">
+              <span className="pager-dir">Next</span>
+              {next.title}
+            </a>
+          ) : (
+            <span />
+          )}
+        </nav>
+      </main>
+      <Footer dark />
+    </div>
   );
 }
 
