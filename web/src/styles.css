@@ -88,6 +88,7 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  width: 100%;
   max-width: var(--max);
   margin: 0 auto;
   padding: 20px var(--pad) 0;
@@ -116,7 +117,7 @@ p {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: min(100svh, 940px);
+  min-height: 100svh;
   background: var(--yellow);
   overflow: hidden;
 }
@@ -138,9 +139,9 @@ p {
   position: relative;
   max-width: var(--max);
   width: 100%;
-  margin: clamp(56px, 12vh, 120px) auto 0;
+  margin: clamp(40px, 9vh, 120px) auto 0;
   padding: 0 var(--pad);
-  font-size: clamp(104px, 25vw, 340px);
+  font-size: clamp(96px, min(25vw, 34vh), 340px);
   font-weight: 400;
   line-height: 0.82;
   letter-spacing: -0.06em;
@@ -150,7 +151,7 @@ p {
 .loops {
   position: relative;
   align-self: flex-end;
-  width: clamp(150px, 30vw, 380px);
+  width: clamp(150px, min(30vw, 40vh), 380px);
   margin: clamp(8px, 2vw, 24px) max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))) 0 0;
   overflow: visible;
 }
@@ -175,7 +176,7 @@ p {
 }
 
 .numeral {
-  font-size: clamp(120px, 24vw, 300px);
+  font-size: clamp(110px, min(24vw, 30vh), 300px);
   font-weight: 300;
   line-height: 0.78;
   letter-spacing: -0.06em;
@@ -808,7 +809,7 @@ p {
     font-size: 16px;
   }
   .hero {
-    min-height: min(100svh, 760px);
+    min-height: 100svh;
   }
   .hero-grid {
     background-image: repeating-linear-gradient(
