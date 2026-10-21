@@ -55,12 +55,21 @@ export default function App() {
   return <RunView report={report} runs={runs || []} />;
 }
 
-function Loops() {
-  // Three loose stitches. The project's mark, drawn like thread.
+function Mark() {
+  // A tear, closed with five stitches: what Mender does to broken code.
+  const tear = "M8 92 L46 70 L60 84 L104 50 L118 66 L162 36 L178 52 L222 24 L236 40 L292 14";
+  const stitches = [
+    [34, 58, 58, 92],
+    [82, 42, 104, 78],
+    [140, 26, 160, 62],
+    [198, 14, 218, 48],
+    [256, 4, 274, 38],
+  ];
   return (
-    <svg className="loops" viewBox="0 0 300 120" aria-hidden="true">
-      {[0, 1, 2].map((i) => (
-        <ellipse key={i} cx={60 + i * 90} cy={60} rx={38} ry={56} transform={`rotate(28 ${60 + i * 90} 60)`} />
+    <svg className="mark" viewBox="0 0 300 104" aria-hidden="true">
+      <path className="mark-tear" d={tear} />
+      {stitches.map(([x1, y1, x2, y2], i) => (
+        <line key={i} className="mark-stitch" x1={x1} y1={y1} x2={x2} y2={y2} style={{ animationDelay: `${300 + i * 110}ms` }} />
       ))}
     </svg>
   );
@@ -88,7 +97,7 @@ function RunView({ report, runs }) {
         <h1 id="title" className="word">
           Mender
         </h1>
-        <Loops />
+        <Mark />
         <div className="hero-foot">
           <span className="numeral" aria-hidden="true">
             {v.solved}

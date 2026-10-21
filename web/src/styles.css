@@ -148,19 +148,38 @@ p {
   text-indent: -0.05em;
 }
 
-.loops {
+.mark {
   position: relative;
   align-self: flex-end;
-  width: clamp(150px, min(30vw, 40vh), 380px);
+  width: clamp(160px, min(32vw, 42vh), 400px);
   margin: clamp(8px, 2vw, 24px) max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))) 0 0;
   overflow: visible;
 }
 
-.loops ellipse {
+.mark-tear,
+.mark-stitch {
   fill: none;
   stroke: var(--ink);
-  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
+}
+
+.mark-tear {
+  stroke-width: 3;
+}
+
+.mark-stitch {
+  stroke-width: 4.5;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: stitch 380ms cubic-bezier(0.3, 0.6, 0.2, 1) forwards;
+}
+
+@keyframes stitch {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .hero-foot {
@@ -845,6 +864,10 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .mark-stitch {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
   .swatch-animate .thread path:not(.loose) {
     animation: none;
     stroke-dashoffset: 0;
