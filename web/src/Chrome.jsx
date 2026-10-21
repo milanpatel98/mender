@@ -14,9 +14,9 @@ export function Bar({ dark }) {
 export function Footer({ dark }) {
   return (
     <footer className={`foot ${dark ? "foot-dark" : ""}`}>
-      <p>Built by Milan Patel. Original tasks, harness and grader. The agent loop uses no framework.</p>
+      <p>© 2026 Milan Patel</p>
       <p>
-        Run your own model: <code>mender bench --model &lt;id&gt;</code>
+        <a href="https://github.com/milanpatel98/mender/blob/main/LICENSE">MIT License</a>
       </p>
     </footer>
   );
