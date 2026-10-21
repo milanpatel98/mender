@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import Swatch from "./Swatch.jsx";
 import TaskView from "./TaskView.jsx";
 import { Bar, Footer } from "./Chrome.jsx";
+import markUrl from "./mark.svg";
 import { VERDICT_SHORT, describeRun, loadIndex, loadReport, parseHash, pct, toHash } from "./data.js";
 
 function useHashRoute() {
@@ -55,20 +56,6 @@ export default function App() {
   return <RunView report={report} runs={runs || []} />;
 }
 
-function Mark() {
-  // A needle and one thread that ends in a checkmark: sewn up, tests passing.
-  return (
-    <svg className="mark" viewBox="0 -24 320 140" aria-hidden="true">
-      <path className="mark-thread" pathLength="100" d="M8 66 C 30 58, 50 52, 78 62 L 122 104 L 226 26" />
-      <g className="mark-needle">
-        <line x1="231" y1="22.2" x2="284" y2="-17.8" className="mark-shaft" />
-        <line x1="284" y1="-17.8" x2="296" y2="-26.8" className="mark-tip" />
-        <ellipse cx="240" cy="15.4" rx="5" ry="1.7" transform="rotate(-37 240 15.4)" className="mark-eye" />
-      </g>
-    </svg>
-  );
-}
-
 function RunView({ report, runs }) {
   const s = report.summary;
   const v = s.verdicts;
@@ -91,7 +78,7 @@ function RunView({ report, runs }) {
         <h1 id="title" className="word">
           Mender
         </h1>
-        {/* Hero mark: Milan is designing it. Drop the SVG into src/mark.svg and render it here. */}
+        <img className="mark" src={markUrl} alt="" />
         <div className="hero-foot">
           <span className="numeral" aria-hidden="true">
             {v.solved}

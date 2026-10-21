@@ -151,42 +151,9 @@ p {
 .mark {
   position: relative;
   align-self: flex-end;
-  width: clamp(200px, min(40vw, 52vh), 520px);
-  margin: clamp(8px, 2vw, 24px) max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))) 0 0;
-  overflow: visible;
-}
-
-.mark-thread {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 9;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: stitch 1100ms cubic-bezier(0.45, 0.05, 0.25, 1) 250ms forwards;
-}
-
-.mark-shaft {
-  stroke: var(--ink);
-  stroke-width: 10;
-  stroke-linecap: round;
-}
-
-.mark-tip {
-  stroke: var(--ink);
-  stroke-width: 4;
-  stroke-linecap: round;
-}
-
-.mark-eye {
-  fill: var(--yellow);
-}
-
-@keyframes stitch {
-  to {
-    stroke-dashoffset: 0;
-  }
+  width: clamp(120px, min(22vw, 30vh), 300px);
+  height: auto;
+  margin: clamp(-24px, -2vw, 0px) max(var(--pad), calc((100% - var(--max)) / 2 + var(--pad))) 0 0;
 }
 
 .hero-foot {
@@ -871,10 +838,6 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mark-thread {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
   .swatch-animate .thread path:not(.loose) {
     animation: none;
     stroke-dashoffset: 0;
