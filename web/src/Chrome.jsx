@@ -1,3 +1,5 @@
+import NeuralHorn from "./NeuralHorn.jsx";
+
 export function Bar({ dark }) {
   return (
     <header className={`bar ${dark ? "bar-dark" : ""}`}>
@@ -14,7 +16,7 @@ export function Bar({ dark }) {
 export function Footer({ dark }) {
   return (
     <footer className={`foot ${dark ? "foot-dark" : ""}`}>
-      <p>© 2026 Milan Patel</p>
+      <NeuralHorn className="foot-nh" />
       <p>
         <a href="https://github.com/milanpatel98/mender/blob/main/LICENSE">MIT License</a>
       </p>

@@ -445,6 +445,33 @@ p {
   color: var(--grey);
 }
 
+/* The Neural Horn copyright: the house yellow sweeps in behind the name, like the
+   highlighted words elsewhere on the page. */
+.foot-nh {
+  font-size: 14px;
+  color: inherit;
+}
+.foot-nh .nh-mark {
+  height: 13px;
+  color: var(--ink);
+}
+.foot-dark .foot-nh .nh-mark {
+  color: var(--white);
+}
+.foot-nh .nh-name {
+  padding: 0 2px;
+  background: linear-gradient(var(--yellow), var(--yellow)) left / 0% 100% no-repeat;
+  transition: background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+.foot-nh:hover .nh-name,
+.foot-nh:focus-visible .nh-name {
+  background-size: 100% 100%;
+  color: var(--ink);
+}
+.foot-nh:focus-visible {
+  outline: none;
+}
+
 .notice {
   max-width: 60ch;
   margin: 40px var(--pad);
